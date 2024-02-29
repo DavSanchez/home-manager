@@ -34,19 +34,11 @@ in {
     }
 
     # Only manage configuration if not empty
-    (lib.mkIf (cfg.settings != { } && !isDarwin) {
+    (lib.mkIf (cfg.settings != { }) {
       xdg.configFile."rio/config.toml".source = if lib.isPath cfg.settings then
         cfg.settings
       else
         settingsFormat.generate "rio.toml" cfg.settings;
-    })
-
-    (lib.mkIf (cfg.settings != { } && isDarwin) {
-      home.file."Library/Application Support/rio/config.toml".source =
-        if lib.isPath cfg.settings then
-          cfg.settings
-        else
-          settingsFormat.generate "rio.toml" cfg.settings;
     })
   ]);
 }
